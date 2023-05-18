@@ -21,9 +21,11 @@ namespace Employee_Management.Controllers
         // GET: EmployeeDetails
         public async Task<IActionResult> Index()
         {
-              return _context.EmployeeDetails != null ? 
-                          View(await _context.EmployeeDetails.ToListAsync()) :
+            return _context.EmployeeDetails != null ?
+                        View( _context.EmployeeDetails.FromSqlRaw("exec DataOFEmployeeeDetails").ToList()):
                           Problem("Entity set 'EmployeeDb.EmployeeDetails'  is null.");
+
+
         }
 
         // GET: EmployeeDetails/Details/5
@@ -34,14 +36,14 @@ namespace Employee_Management.Controllers
                 return NotFound();
             }
 
-            var employeeDetail = await _context.EmployeeDetails
-                .FirstOrDefaultAsync(m => m.EmpId == id);
+            var employeeDetail = _context.EmployeeDetails.FromSqlRaw($"Exec EmployeeDataById @p0",id).ToList();
+            var result = employeeDetail.Single();
             if (employeeDetail == null)
             {
                 return NotFound();
             }
 
-            return View(employeeDetail);
+            return View(result);
         }
 
         // GET: EmployeeDetails/Create

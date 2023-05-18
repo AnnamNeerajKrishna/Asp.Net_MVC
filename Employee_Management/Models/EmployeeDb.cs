@@ -33,6 +33,7 @@ namespace Employee_Management.Models
             {
                 entity.Property(e => e.EmpId).ValueGeneratedNever();
             });
+             
 
             OnModelCreatingPartial(modelBuilder);
         }
